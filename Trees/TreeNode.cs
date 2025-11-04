@@ -42,8 +42,6 @@ namespace Trees
                 output += child.ToString(depth + 1, childIndex);
             }
             return output;
-            
-            return null;
         }
 
         public TreeNode<T> Add(T value)
@@ -96,13 +94,58 @@ namespace Trees
         public void Remove(T value)
         {
             //TODO #7: Remove the child node that has Value=value. Apply recursively
-            
+
+            //Creamos un bucle for de tal manera que asignamos a "child" cada hijo distinto del Nodo del que se invoca el metodo, cambiando de hijo por iteración
+            for (int i = 0; i<Children.Count(); i++)
+            {
+                //por cada i se pasa al siguiente hijo
+                TreeNode<T> child = Children.Get(i);
+
+                //
+                if(child == null)
+                {
+                    continue;
+                }
+
+                //si alguno de los hijos del Nodo tiene el valor que se quire eliminar, lo eleminamos
+                if (child.Value.Equals(value))
+                {
+                    Children.Remove(i);
+                    i--;
+                }
+                //si el hijo no tiene el valor que buscamos, llamamos de manera recursiva al metodo Remove() de TreeNode<T> pero con los hijos de los hijos.
+                else
+                {
+                    child.Remove(value);
+                }
+            }
         }
 
         public TreeNode<T> Find(T value)
         {
             //TODO #8: Return the node that contains this value (it might be this node or a child). Apply recursively
+            if (Value.Equals(value))
+            {
+                return this;
+            }
             
+            for (int i = 0; i < Children.Count(); i++)
+            {
+                //por cada i se pasa al siguiente hijo
+                TreeNode<T> child = Children.Get(i);
+
+                if (child == null)
+                {
+                    continue;
+                }
+                
+                TreeNode<T> found = child.Find(value);
+
+                if (found != null)
+                {
+                    return found;
+                }
+            }
             return null;
         }
 

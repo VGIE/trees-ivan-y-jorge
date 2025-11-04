@@ -110,58 +110,52 @@ public class List<T> : IList<T>
         //TODO #4: remove the element on the index-th position. Do nothing if position is out of bounds
 
         //Si esta vacio o index esta "out of bounds"
-        if (First == null || index < 0 || index >= m_numItems)
+        if (index < 0 || index >= m_numItems)
         {
             return default(T);
         }
 
         ListNode<T> node = First;
-        T removedVariable = default(T);
-  
+
 
         //Si se quiere eleminar el primer nodo
         if (index == 0)
         {
-            // Y es el unico
-            if (First == Last)
-            {
-                removedVariable = node.Value;
-                First = null;
-                Last = null;
-                m_numItems--;
-                return removedVariable;
-            }
-            //No es el Unico
-            removedVariable = node.Value;
+            T removedValue = node.Value;
             First = node.Next;
+
+            if (First != null)
+                First.Previous = null;
+            else
+                Last = null; // la lista quedó vacía
+
             m_numItems--;
-            return removedVariable;
+            return removedValue;
         }
-        //Si se quiere eleminar el ultimo nodo
-        if (index == m_numItems - 1)
+        
+        // Movernos hasta el nodo a eliminar
+        for (int i = 0; i < index; i++)
         {
-            /*
-            for (int i = 0; i < m_numItems; i++)
-            {
-                if (node.Next.Next == null)
-                {
-                    removedVariable = node.Next.Value;
-                    Last = node;
-                    m_numItems--;
-                    return removedVariable;
-                }
-                node = node.Next;
-            }
-            */
+            node = node.Next;
+        }
+        T valueToRemove = node.Value;
 
-            removedVariable = Last.Value;
-            Last = Last.Previous;
-            m_numItems--;
-            return removedVariable;
+        // Caso 2: eliminar último
+        if (node == Last)
+        {
+            Last = node.Previous;
+            Last.Next = null;
+        }
+        else
+        {
+            // Caso 3: eliminar nodo del medio
+            node.Previous.Next = node.Next;
+            node.Next.Previous = node.Previous;
         }
 
-
-        //Si eleminamos una que no es no la primera ni la ultima
+        m_numItems--;
+        return valueToRemove;
+    }
 
         /*for (int i = 0; i < m_numItems; i++)
         {
@@ -176,24 +170,6 @@ public class List<T> : IList<T>
         }
             
         */
-        if(index != m_numItems - 1 && index != 0)
-        {
-            for(int i = 0; i<m_numItems;i++)
-            {
-
-                if (i == index - 1)
-                {
-                    removedVariable = node.Next.Value;
-                    node.Next = node.Next.Next;
-                    node.Next.Previous = node.Next.Previous.Previous;
-                    m_numItems--;
-                    return removedVariable;
-                }
-            }
-        }
-
-
-        return default(T);
 
         /*
 
@@ -215,7 +191,7 @@ public class List<T> : IList<T>
         m_numItems--;
         return removedVariable;
         */
-    }
+    
 
     public void Clear()
     {
