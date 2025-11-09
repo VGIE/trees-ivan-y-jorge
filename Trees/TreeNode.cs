@@ -102,7 +102,7 @@ namespace Trees
                 TreeNode<T> child = Children.Get(i);
 
                 //
-                if(child == null)
+                if(child.Value == null)
                 {
                     continue;
                 }
@@ -111,7 +111,7 @@ namespace Trees
                 if (child.Value.Equals(value))
                 {
                     Children.Remove(i);
-                    i--;
+                    break;
                 }
                 //si el hijo no tiene el valor que buscamos, llamamos de manera recursiva al metodo Remove() de TreeNode<T> pero con los hijos de los hijos.
                 else
@@ -153,6 +153,20 @@ namespace Trees
         public void Remove(TreeNode<T> node)
         {
             //TODO #9: Same as #6, but this method is given the specific node to remove, not the value
+            for(int i = 0; i < Children.Count(); i++)
+            {
+                
+                TreeNode<T> child = Children.Get(i);
+
+                if (child == node)
+                {
+                    Children.Remove(i);
+                    return;
+                }
+
+                child.Remove(node);
+                
+            }
             
         }
     }
