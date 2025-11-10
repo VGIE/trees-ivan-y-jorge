@@ -238,20 +238,35 @@ namespace BinaryTrees
                 {
                     return null;
                 }
+                
                 //si tiene LeftChild
                 if (LeftChild != null && RightChild == null)
                 {
                     return LeftChild;
                 }
+
                 //si tiene RightChild
                 if (RightChild != null && LeftChild == null)
                 {
                     return RightChild;
                 }
+                
                 //Si tiene ambos
                 if (RightChild != null && LeftChild != null)
                 {
-                    
+                //buscar el sucesor, es decir por el que vamos a sustituir el nodo a borrar
+                BinaryTreeNode<TKey, TValue> sucesor = RightChild;
+                while (sucesor.LeftChild != null)
+                    sucesor = sucesor.LeftChild;
+
+                //Ajustar valores del nodo actual con los del sucesor
+                Key = sucesor.Key;
+                Value = sucesor.Value;
+
+                //Eliminar el nodo origanl
+                RightChild = RightChild.Remove(sucesor.Key);
+
+                return this;
                 }
 
             }

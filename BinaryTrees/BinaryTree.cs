@@ -79,9 +79,25 @@ namespace BinaryTrees
             //          - Create a new tree node with the key/values in the center of the [start,end] section of the arrays
             //          - Recursive call to AddBalanced with the elements on the left of center [start,center-1]. Add the result to the new node as LeftNode
             //          - Recursive call to AddBalanced with the elements on the right of center [center+1,end]. Add the result to the new node as RightNode
-            
-            return null;
-            
+            if (start > end)
+            {
+                return null;
+            }
+
+
+            //conseguir el centro
+            int centro = (start + end) / 2;
+
+            BinaryTreeNode<TKey, TValue> nodoCentral = new BinaryTreeNode<TKey, TValue>(keys[centro], values[centro]);
+
+            //construir recursivamente subarbol tanto izquierdo como derecho
+
+            nodoCentral.LeftChild = AddBalanced(keys, values, start, centro - 1);
+            nodoCentral.RightChild = AddBalanced(keys, values, centro + 1, end);
+            return nodoCentral;
+
+
+
         }
 
         public void Balance()
