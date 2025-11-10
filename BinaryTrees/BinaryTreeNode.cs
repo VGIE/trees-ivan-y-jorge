@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics.Tracing;
 using System.Globalization;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 namespace BinaryTrees
 {
@@ -205,57 +206,58 @@ namespace BinaryTrees
             //so this method returns the node with which this node needs to be replaced. If this node isn't the
             //one we are looking for, we will return this, so that the parent node can replace LeftChild/RightChild
             //with the same node it had.
-            /*
             
-
+            
+            //si key esta la izq
             if (Key.CompareTo(key) > 0)
             {
                 if (LeftChild != null)
                 {
-                    BinaryTreeNode<TKey, TValue> node = Remove(key);
+                    BinaryTreeNode<TKey, TValue> node = LeftChild.Remove(key);
                     LeftChild = node;
-                    return node;
+                    return this;
                 }
             }
 
+            //si key esta a la dcha
             if (Key.CompareTo(key) < 0)
             {
                 if (RightChild != null)
                 {
-                    BinaryTreeNode<TKey, TValue> node = Remove(key);
+                    BinaryTreeNode<TKey, TValue> node = RightChild.Remove(key);
                     RightChild = node;
-                    return node;
+                    return this;
                 }
             }
-            
+
+            //Si key = this node
             if (Key.CompareTo(key) == 0)
             {
+                //si no tiene hijos
                 if (LeftChild == null && RightChild == null)
                 {
                     return null;
                 }
+                //si tiene LeftChild
                 if (LeftChild != null && RightChild == null)
                 {
-                    return this;
+                    return LeftChild;
                 }
+                //si tiene RightChild
                 if (RightChild != null && LeftChild == null)
                 {
-                    return this;
+                    return RightChild;
                 }
+                //Si tiene ambos
                 if (RightChild != null && LeftChild != null)
                 {
                     
-                } 
-                
+                }
+
             }
-            //No tiene hijos (Queremos borrar una hoja)
+
+            return this;
             
-            //Solo tiene un hijo
-
-            //Tiene ambos hijos
-
-            */
-            return default;
 
         }
 
